@@ -3,6 +3,7 @@ package mscartoes.mscartoes.infra.mqueue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mscartoes.mscartoes.Cartao;
 import mscartoes.mscartoes.domain.ClienteCartao;
 import mscartoes.mscartoes.domain.DadosSolicitacaoEmissaoCartao;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class EmissaoCartaoSubscriber {
 
 
@@ -32,8 +34,8 @@ public class EmissaoCartaoSubscriber {
            clienteCartao.setCpf(dadosSolicitacaoEmissaoCartao.getCpf());
            clienteCartao.setLimite(dadosSolicitacaoEmissaoCartao.getLimiteLiberado());
            clienteCartaoRepository.save(clienteCartao);
-       }catch (JsonProcessingException e){
-           e.printStackTrace();
+       }catch (Exception e){
+           log.error("Erro ao receber solicitacao de cartao: {}", e.getMessage());
        }
 
     }
